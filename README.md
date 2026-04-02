@@ -1,1 +1,1 @@
-Do not read me
+Приложение можно запустить на windows командой `./deploy.cmd` из папки app.
