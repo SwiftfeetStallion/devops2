@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      initContainers:
+      - name: create-file
+        image: busybox
+        command: ['sh', '-c']
+        args:
+        - printf "Application logs:\n" > /app/logs/app.log
+
+        volumeMounts:
+        - mountPath: /app/logs
+          name: log-dir
+
+      containers:
+      - image: nameofmyuser/app:latest
+        name: my-app
+
+        env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-file
+                key: port
+
+          - name: GREETING
+            valueFrom:
+              configMapKeyRef:
+                name: config-file
+                key: greeting
+
+
+        volumeMounts:
+        - mountPath: /app/logs
+          name: log-dir
+
+        - mountPath: /app/config
+          name: config-dir
+
+      volumes:
+      - name: log-dir
+        hostPath:
+          path: /var/log
+
+      - name: config-dir
+        configMap:
+          name: config-file
+

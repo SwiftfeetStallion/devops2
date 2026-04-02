@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+  labels:
+    app: my-app
+spec:
+  containers:
+  - image: nameofmyuser/app:latest
+    name: my-app
+
+    env:
+      - name: PORT
+        valueFrom:
+          configMapKeyRef:
+            name: config-file
+            key: port
+
+      - name: GREETING
+        valueFrom:
+          configMapKeyRef:
+            name: config-file
+            key: greeting
+
+
+    volumeMounts:
+    - mountPath: /app/logs
+      name: log-dir
+
+    - mountPath: /app/config
+      name: config-dir
+
+ 
+  volumes:
+  - name: log-dir
+    emptyDir: {}
+
+  - name: config-dir
+    configMap:
+      name: config-file
