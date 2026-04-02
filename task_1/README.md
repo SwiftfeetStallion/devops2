@@ -1,9 +1,7 @@
-После создания deployment и выполнения команды `kubectl port-forward service/app-service 80` проверяем работу приложения через `curl`.
+После создания deployment и выполнения команды `kubectl port-forward service/app-service 80` проверяем работу приложения через `curl`. Можно зайти и на web-страницу.
 
-![](img/curl%20example.png)  
+![](img/curl%20example.png)
 
-
-Также можно зайти на web-страницу:
 ![](img/web.png)
 
 Поменяем приветственное сообщение в <i>config.yaml</i> и перезапустим deployment: `kubectl rollout restart deployment/app-deployment`.
