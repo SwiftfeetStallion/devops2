@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-file
+data:
+  port: "3000"
+  greeting: "Welcome to the custom app"
